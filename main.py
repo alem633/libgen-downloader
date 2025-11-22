@@ -72,7 +72,7 @@ def fetch_ddl_id(mirror_link):
         return ddl_ids
     except Exception as e:
         if args.debug:
-            print(f"Errore su {mirror_link}: {e}")
+            print(f"Error on {mirror_link}: {e}")
         return []
 
 def get_direct_dl_ids(mirror_page_links):
