@@ -32,7 +32,7 @@ DEBUG_DDL_IDS_FILENAME = "ddl_ids.txt"
 
 depth = 100
 if args.depth:
-    depth = args.depth
+    depth = int(args.depth)
 
 with open('headers.json', 'r') as f:
     headers = json.load(f)
@@ -128,12 +128,17 @@ def scrape(query):
     if not args.nocurl:
         libgen_mirror_ids = get_libgen_mirror_ids(soup)
 
+    # temp
+    if len(libgen_mirror_ids) > depth:
+        libgen_mirror_ids = libgen_mirror_ids[:depth]
+
     if args.nocurl:
         with open(DEBUG_DIR + "/" + DEBUG_MIRRORS_FILENAME, "r") as f:
             libgen_mirror_ids = [line.strip() for line in f if line.strip()]
 
     if not libgen_mirror_ids:
-        sys.exit("Couldn't find any mirrors")
+        print("Couldn't find any mirrors for " + query)
+        return 1
 
     if args.debug:
         with open(DEBUG_DIR + "/" + DEBUG_MIRRORS_FILENAME, "w") as f:
@@ -158,8 +163,8 @@ def scrape(query):
 
     # -- Dump ddls to file -- 
     with open(OUTPUT_DIR + "/" + params['req'] + ".txt", "w") as f:
-        for i in range(int(depth)):
-            f.write(BASE_URL + "/" + BASE_DIRECT_DL_URL + ddl_ids[i] + '\n')
+        for id in ddl_ids:
+            f.write(BASE_URL + "/" + BASE_DIRECT_DL_URL + id + '\n')
 
 def main():
     for query in args.queries:
