@@ -158,8 +158,8 @@ def scrape(query):
 
     # -- Dump ddls to file -- 
     with open(OUTPUT_DIR + "/" + params['req'] + ".txt", "w") as f:
-        for id in ddl_ids:
-            f.write(BASE_URL + "/" + BASE_DIRECT_DL_URL + id + '\n')
+        for i in range(int(depth)):
+            f.write(BASE_URL + "/" + BASE_DIRECT_DL_URL + ddl_ids[i] + '\n')
 
 def main():
     for query in args.queries:
